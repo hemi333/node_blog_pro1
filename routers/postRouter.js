@@ -8,6 +8,7 @@ const {
   getOnePost,
   getEditPost,
   postEditPost,
+  getdeletePost,
   deleteOnePost,
 } = require('../controllers/postController');
 
@@ -20,10 +21,12 @@ postRouter.post('/post', postWrite);
 
 // 특정 게시글 GET / DELETE
 postRouter.get('/post/:postId([0-9a-fA-F]{24})', getOnePost);
-postRouter.delete('/post/:postId([0-9a-fA-F]{24})', deleteOnePost);
+postRouter.get('/post/delete/:postId([0-9a-fA-F]{24})', getdeletePost);
+postRouter.delete('/post/delete/:postId([0-9a-fA-F]{24})', deleteOnePost);
 
 // 게시글 수정 GET / POST
 postRouter.get('/post/edit/:postId([0-9a-fA-F]{24})', getEditPost);
 postRouter.post('/post/edit/:postId([0-9a-fA-F]{24})', postEditPost);
+
 
 module.exports = postRouter;

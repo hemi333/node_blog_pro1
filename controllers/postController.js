@@ -4,7 +4,7 @@ const Post = require('../schemas/Post');
 // 모든 게시글 조회
 const getAllPost = async (req, res) => {
   try {
-    const posts = await Post.find({});
+    const posts = await Post.find({})
     res.status(200).render('board', { posts });
   } catch (error) {
     res.status(400).send({ error: error.message });
@@ -51,16 +51,29 @@ const getOnePost = async (req, res) => {
   }
 };
 
+const getdeletePost = async (req, res) => {
+  try {
+    const {
+      params: { postId },
+    } = req;
+    const post = await Post.findOne({ _id: postId });
+    res.status(200).render('deletePost', { post });
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+};
+
 const deleteOnePost = async (req, res) => {
   try {
     const {
       params: { postId },
       body: { password }
     } = req;
-    const posts = await Post.findOne({_id: postId });
-    console.log(posts);
+
+  const posts = await Post.findOneAndDelete({ _id: postId }, { password });
     if (password == posts.password) {
-      await Post.findOneAndDelete({ _id: postId });
+      posts.post = { password };
+      posts.save();
       res.redirect(`/board/post/${postId}`);
     } else {
       res.status(403).send({ ERROR: '비밀번호가 올바르지 않습니다.'});
@@ -90,7 +103,6 @@ const postEditPost = async (req, res) => {
       body: { title, contents, password },
     } = req;
     const targetPost = await Post.findOneAndUpdate({ _id: postId }, { title, contents });
-
     if(password == targetPost.password) {
       targetPost.post = {title, contents};
       targetPost.save();
@@ -110,5 +122,6 @@ module.exports = {
   getOnePost,
   getEditPost,
   postEditPost,
+  getdeletePost,
   deleteOnePost,
 };

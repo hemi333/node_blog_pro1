@@ -14,7 +14,7 @@
     <p><%=post.createdAt.toLocaleDateString()%></p>
 
     <button><a href="/board/post/edit/<%=post._id%>">수정</a></button>
-    <button><a href="/board/post/edit/<%=post._id%>">삭제</a></button>
+    <button><a href="/board/post/delete/<%=post._id%>">삭제</a></button>
 
     <hr>
 
@@ -45,7 +45,6 @@
         <hr>
       <%}%>
     </div>
-
     <form action="/comment/<%=post._id%>" method="post">
       <div class="input-container"></div>
         <input name="writer" type="text" placeholder="작성자" />

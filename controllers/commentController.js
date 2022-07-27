@@ -7,6 +7,10 @@ const postComment = async (req, res) => {
       body: { comment, writer },
     } = req;
 
+    if (comment == "" ) {
+      res.status(403).send({ ERROR: "댓글 내용을 입력해 주세요." });
+    }
+
     await Comment.create({
       post: postId,
       comment,
@@ -25,6 +29,10 @@ const editComment = async (req, res) => {
       params: { postId, commentId },
       body: { comment },
     } = req;
+
+    if (comment == "" ) {
+      res.status(403).send({ ERROR: "댓글 내용을 입력해 주세요." });
+    }
     await Comment.findOneAndUpdate({ post: postId, _id: commentId }, { comment });
     res.redirect(`/board/post/${postId}`);
   } catch (error) {
