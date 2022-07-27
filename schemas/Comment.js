@@ -24,11 +24,6 @@ const commentSchema = new mongoose.Schema({
     default: '익명',
     trim: true,
   },
-  password: {
-    type: Number,
-    required: true,
-    trim: true,
-  },
   createdAt: {
     type: String,
     default: `${year}, ${month}월 ${date}일 ${h}:${m}`,

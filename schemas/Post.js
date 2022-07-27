@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema(
   {
+    writer: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     title: {
       type: String,
       required: true,
@@ -11,10 +16,9 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    writer: {
-      type: String,
+    password: {
+      type: Number && String,
       required: true,
-      trim: true,
     },
   },
   {

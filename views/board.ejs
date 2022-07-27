@@ -18,8 +18,7 @@
                 <p>제목: <a href="/board/post/<%=data._id%>"><%=data.title%></a></p>
                 <p>작성자: <%=data.writer%></p>
                 <p>내용: <%=data.contents%></p>
-                <p>작성일: <%=data.createdAt%></p>
-                <p>수정일: <%=data.updatedAt%></p>
+                <p>작성일: <%=data.createdAt.toLocaleDateString()%></p>
             </div>
             <hr>
             <br>

@@ -23,24 +23,15 @@ const getWrite = (req, res) => {
 const postWrite = async (req, res) => {
   try {
     const {
-      body: { title, contents, writer },
+      body: { writer, title, contents, password },
     } = req;
     const post = await Post.create({
+      writer,
       title,
       contents,
-      writer,
+      password,
     });
     res.redirect(`/board/post/${post._id}`);
-  } catch (error) {
-    res.status(400).send({ error: error.message });
-  }
-};
-
-// 게시글 전체 DELETE - 임시
-const deleteAllPost = async (req, res) => {
-  try {
-    await Post.deleteMany({});
-    res.sendStatus(204);
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
@@ -64,9 +55,16 @@ const deleteOnePost = async (req, res) => {
   try {
     const {
       params: { postId },
+      body: { password }
     } = req;
-    await Post.findOneAndDelete({ _id: postId });
-    res.sendStatus(204);
+    const posts = await Post.findOne({_id: postId });
+    console.log(posts);
+    if (password == posts.password) {
+      await Post.findOneAndDelete({ _id: postId });
+      res.redirect(`/board/post/${postId}`);
+    } else {
+      res.status(403).send({ ERROR: '비밀번호가 올바르지 않습니다.'});
+    }
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
@@ -89,17 +87,23 @@ const postEditPost = async (req, res) => {
   try {
     const {
       params: { postId },
-      body: { title, contents },
+      body: { title, contents, password },
     } = req;
-    await Post.findOneAndUpdate({ _id: postId }, { title, contents });
-    res.redirect(`/board/post/${postId}`);
+    const targetPost = await Post.findOneAndUpdate({ _id: postId }, { title, contents });
+
+    if(password == targetPost.password) {
+      targetPost.post = {title, contents};
+      targetPost.save();
+      res.redirect(`/board/post/${postId}`);
+    } else {
+      res.status(403).send({ ERROR: '비밀번호가 올바르지 않습니다.' });
+    }
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
 };
 
 module.exports = {
-  deleteAllPost,
   getAllPost,
   getWrite,
   postWrite,
