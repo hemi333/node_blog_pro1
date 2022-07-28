@@ -69,12 +69,13 @@ const deleteOnePost = async (req, res) => {
       params: { postId },
       body: { password },
     } = req;
-  const targetDelete = await Post.findOne({ _id: postId });
-    console.log(targetDelete);
-    if (password != targetDelete.password) {
+  const deletepost = await Post.findOne({ _id: postId });
+  console.log(deletepost);
+  console.log(password);
+    if (password !== deletepost.password) {
       res.json({ message: '비밀번호가 올바르지 않습니다.' });
     } else {
-      await Post.deleteOne({ _id: postId });
+      await Post.deleteOne(deletepost);
     };
     res.json({ message: '게시글을 삭제하였습니다.' });
   } catch (error) {
