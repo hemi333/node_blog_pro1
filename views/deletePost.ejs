@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1>삭제하기</h1>
-    <form name="board" method="POST" action="/board/post/delete/<%=post._id%>">
+    <form name="board" method="DELETE" action="/board/post/delete/<%=post._id%>">
       <input name="password" value="<%=post.password%>" />
       <button type="submit">완료</button>
     </form>

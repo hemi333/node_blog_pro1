@@ -4,7 +4,7 @@ const Post = require('../schemas/Post');
 // 모든 게시글 조회
 const getAllPost = async (req, res) => {
   try {
-    const posts = await Post.find({})
+    const posts = await Post.find({}).sort({_id:-1})
     res.status(200).render('board', { posts });
   } catch (error) {
     res.status(400).send({ error: error.message });
@@ -67,20 +67,19 @@ const deleteOnePost = async (req, res) => {
   try {
     const {
       params: { postId },
-      body: { password }
+      body: { password },
     } = req;
-
-  const posts = await Post.findOneAndDelete({ _id: postId }, { password });
-    if (password == posts.password) {
-      posts.post = { password };
-      posts.save();
-      res.redirect(`/board/post/${postId}`);
+  const targetDelete = await Post.findOne({ _id: postId });
+    console.log(targetDelete);
+    if (password != targetDelete.password) {
+      res.json({ message: '비밀번호가 올바르지 않습니다.' });
     } else {
-      res.status(403).send({ ERROR: '비밀번호가 올바르지 않습니다.'});
-    }
+      await Post.deleteOne({ _id: postId });
+    };
+    res.json({ message: '게시글을 삭제하였습니다.' });
   } catch (error) {
     res.status(400).send({ error: error.message });
-  }
+  };
 };
 
 // 게시글 수정 GET / POST

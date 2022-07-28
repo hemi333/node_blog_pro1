@@ -22,7 +22,7 @@ postRouter.post('/post', postWrite);
 // 특정 게시글 GET / DELETE
 postRouter.get('/post/:postId([0-9a-fA-F]{24})', getOnePost);
 postRouter.get('/post/delete/:postId([0-9a-fA-F]{24})', getdeletePost);
-postRouter.delete('/post/delete/:postId([0-9a-fA-F]{24})', deleteOnePost);
+postRouter.delete('/:postId', deleteOnePost);
 
 // 게시글 수정 GET / POST
 postRouter.get('/post/edit/:postId([0-9a-fA-F]{24})', getEditPost);
